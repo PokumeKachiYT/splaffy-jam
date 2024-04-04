@@ -1,0 +1,149 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1ta4jmeemaak"]
+
+[ext_resource type="PackedScene" uid="uid://ip2r7ss67un3" path="res://Scenes/ui.tscn" id="1_cbd2r"]
+[ext_resource type="AudioStream" uid="uid://y6skjuh3vyr7" path="res://Assets/Sounds/SwitchOn.mp3" id="1_eryxb"]
+[ext_resource type="AudioStream" uid="uid://dqbk1k6c30brc" path="res://Assets/Sounds/Footsteps.mp3" id="2_lwds8"]
+[ext_resource type="AudioStream" uid="uid://bc0svus5qx51p" path="res://Assets/Sounds/SwitchOff.mp3" id="2_o8coh"]
+
+[sub_resource type="GDScript" id="GDScript_rss40"]
+script/source = "extends CharacterBody3D
+
+@onready var paused = true
+
+var battery_used: float = 0.0
+
+const SPEED = 1.0
+const SENSITIVITY = 0.001
+
+const ACCELERATION = 5
+const FRICTION = 10
+
+var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+
+@onready var Camera: Camera3D = $Camera
+@onready var Flashlight: SpotLight3D = $Camera/Flashlight
+
+@onready var UI: CanvasLayer = $UI
+@onready var battery_bar: ColorRect = $UI/Battery/ColorRect
+
+@onready var Footsteps = $Footsteps
+@onready var SwitchOn = $Camera/Flashlight/SwitchOn
+@onready var SwitchOff = $Camera/Flashlight/SwitchOff
+
+@onready var yPos = global_position.y
+
+var bobble = 0.0
+
+func start() -> void:
+	paused = false
+
+func toggle_ui() -> void:
+	UI.visible = true
+
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	Global.StartGame.connect(start)
+	Global.ToggleUI.connect(toggle_ui)
+
+func _physics_process(delta):
+	battery_bar.size.x = 595.0 * (battery_used / 100.0)
+	
+	if paused:
+		return
+	
+	var input_dir = Input.get_vector(\"left\", \"right\", \"forward\", \"backward\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if direction:
+		if not Footsteps.playing:
+			Footsteps.play()
+		bobble += delta
+		velocity.x = lerp(velocity.x,direction.x * SPEED,ACCELERATION * delta)
+		velocity.z = lerp(velocity.z,direction.z * SPEED,ACCELERATION * delta)
+	else:
+		if Footsteps.playing:
+			Footsteps.stop()
+		velocity.x = lerp(velocity.x,0.0,FRICTION * delta)
+		velocity.z = lerp(velocity.z,0.0,FRICTION * delta)
+	
+	if Input.is_action_just_pressed('lmb') and battery_used < 100:
+		Flashlight.visible = not Flashlight.visible
+		
+		if Flashlight.visible:
+			SwitchOn.play()
+		else:
+			SwitchOff.play()
+	
+	if Flashlight.visible:
+		battery_used += delta
+	if battery_used >= 100:
+		Flashlight.visible = false
+	
+	Camera.transform.origin.y = sin(bobble * 5) * 0.02
+	Camera.transform.origin.x = sin(bobble * 3) * 0.05
+	
+	#global_position.y = yPos
+	
+	move_and_slide()
+
+func _input(event):
+	if paused:
+		return
+	if event is InputEventMouseMotion:
+		rotate_y(-event.relative.x * SENSITIVITY)
+		Camera.rotate_x(-event.relative.y * SENSITIVITY)
+		Camera.rotation_degrees.x = clamp(Camera.rotation_degrees.x,-35,35)
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wb2af"]
+height = 2.25
+
+[node name="Character" type="CharacterBody3D"]
+script = SubResource("GDScript_rss40")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0, 0)
+current = true
+fov = 30.0
+size = 5.0
+
+[node name="Sight" type="OmniLight3D" parent="Camera"]
+light_energy = 0.05
+light_volumetric_fog_energy = 2.0
+shadow_enabled = true
+distance_fade_begin = 0.0
+distance_fade_length = 60.0
+omni_range = 20.0
+
+[node name="Flashlight" type="SpotLight3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.104696, -0.0571162, -0.0490003)
+visible = false
+light_color = Color(0.768627, 0.823529, 0.980392, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 16.0
+light_specular = 16.0
+shadow_enabled = true
+distance_fade_enabled = true
+distance_fade_begin = 0.0
+distance_fade_length = 60.0
+spot_range = 100.0
+spot_attenuation = 1.27457
+spot_angle = 15.0
+spot_angle_attenuation = 4.7075
+
+[node name="SwitchOn" type="AudioStreamPlayer3D" parent="Camera/Flashlight"]
+stream = ExtResource("1_eryxb")
+
+[node name="SwitchOff" type="AudioStreamPlayer3D" parent="Camera/Flashlight"]
+stream = ExtResource("2_o8coh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wb2af")
+
+[node name="UI" parent="." instance=ExtResource("1_cbd2r")]
+visible = false
+
+[node name="Footsteps" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.876763, 0)
+stream = ExtResource("2_lwds8")

@@ -1,0 +1,283 @@
+[gd_scene load_steps=24 format=3 uid="uid://5ecmsuvmfvqy"]
+
+[ext_resource type="PackedScene" uid="uid://bcfwu6rfc4p0m" path="res://Scenes/collider.tscn" id="1_ti5od"]
+[ext_resource type="PackedScene" uid="uid://b1ta4jmeemaak" path="res://Scenes/character.tscn" id="2_0owvr"]
+[ext_resource type="Script" path="res://Scripts/StartEnvironment.gd" id="3_r8kyh"]
+[ext_resource type="PackedScene" uid="uid://com1jw8da3xyw" path="res://Assets/Models/Computer.blend" id="4_d0gae"]
+[ext_resource type="Script" path="res://Scripts/StartText.gd" id="5_dlqm0"]
+[ext_resource type="PackedScene" uid="uid://c4g1ck7l6hemi" path="res://Assets/Models/Table.blend" id="5_hujhc"]
+[ext_resource type="FontFile" uid="uid://bsdah0bshdn2c" path="res://Assets/Fonts/consolas/Regular.ttf" id="6_c687m"]
+[ext_resource type="Texture2D" uid="uid://6twdij0e0iq0" path="res://Assets/Sprites/LeftClick.svg" id="7_e8vv3"]
+[ext_resource type="AudioStream" uid="uid://cb5gjc37qkxlm" path="res://Assets/Sounds/Ambience.mp3" id="8_nkydw"]
+
+[sub_resource type="Environment" id="Environment_hsqoa"]
+background_energy_multiplier = 0.0
+ambient_light_source = 2
+ambient_light_energy = 0.0
+tonemap_mode = 3
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.592157, 0.592157, 0.592157, 1)
+volumetric_fog_emission = Color(0.0470588, 0.0470588, 0.0470588, 1)
+volumetric_fog_length = 32.0
+volumetric_fog_temporal_reprojection_enabled = false
+adjustment_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_edx5x"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jnw57"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3v84"]
+albedo_color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u3fgt"]
+material = SubResource("StandardMaterial3D_r3v84")
+flip_faces = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_7nfof"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_5h1wm"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_eb8ma"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_rrqgr"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_rfv82"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_edx5x")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8vie"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_imqcn"]
+material = SubResource("StandardMaterial3D_a8vie")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s146v"]
+viewport_path = NodePath("Map/Room1/Computer/Screen/Sprite3D/SubViewport")
+
+[sub_resource type="Theme" id="Theme_18xt8"]
+default_font = ExtResource("6_c687m")
+default_font_size = 72
+
+[node name="Main" type="Node3D"]
+
+[node name="Character" parent="." instance=ExtResource("2_0owvr")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.255, 1.64116, 3.158)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hsqoa")
+script = ExtResource("3_r8kyh")
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Base" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(452.699, 0, 0, 0, 1.00294, 0, 0, 0, 124.017, 0, 0, 0)
+mesh = SubResource("BoxMesh_jnw57")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Walls" type="MeshInstance3D" parent="Map/Base"]
+transform = Transform3D(0.892848, 0, 0, 0, -3.41016, 0, 0, 0, 0.943412, 0, 1.74311, 0)
+mesh = SubResource("BoxMesh_u3fgt")
+skeleton = NodePath("../../..")
+
+[node name="Room1" type="Node3D" parent="Map"]
+
+[node name="Wall" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 9.3168, 2.26632, 1.60845, -0.00635576)
+mesh = SubResource("BoxMesh_7nfof")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall2" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 21.5687, 0, 5.43983, 0, -0.260635, 0, -9.42798e-07, -5.11984, 1.60845, 4.60142)
+mesh = SubResource("BoxMesh_5h1wm")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall6" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 21.5687, 0, 5.43983, 0, -0.260635, 0, -9.42798e-07, -1.59522, 1.60845, -7.65077)
+mesh = SubResource("BoxMesh_5h1wm")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall4" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 10.8091, 0, 5.43983, 0, -0.260635, 0, -4.72482e-07, -6.1572, 1.60845, -4.48276)
+mesh = SubResource("BoxMesh_eb8ma")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall5" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 24.3456, 0, 5.43983, 0, -0.260635, 0, -1.06418e-06, 13.57, 1.60845, -4.64661)
+mesh = SubResource("BoxMesh_rrqgr")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall7" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 24.3456, 0, 5.43983, 0, -0.260635, 0, -1.06418e-06, 10.3352, 1.60845, -11.5312)
+mesh = SubResource("BoxMesh_rrqgr")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall9" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 12.8698, 0, 5.43983, 0, -0.260635, 0, -5.62557e-07, -12.683, 1.60845, -14.7968)
+mesh = SubResource("BoxMesh_rrqgr")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall10" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 24.3456, 0, 5.43983, 0, -0.260635, 0, -1.06418e-06, -18.6579, 1.60845, -26.271)
+mesh = SubResource("BoxMesh_rrqgr")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall11" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(-1.13927e-08, 0, 11.3015, 0, 5.43983, 0, -0.260635, 0, -4.94005e-07, -4.67698, 1.60845, -20.4867)
+mesh = SubResource("BoxMesh_rrqgr")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall3" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 8.99187, -3.45134, 1.60148, 0.0194538)
+mesh = SubResource("BoxMesh_rfv82")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall8" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 26.2365, -14.2658, 1.60148, -7.06867)
+mesh = SubResource("BoxMesh_rfv82")
+skeleton = NodePath("../..")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Computer" parent="Map/Room1" instance=ExtResource("4_d0gae")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, -0.318669, 1.33679, 3.15819)
+
+[node name="Screen" type="MeshInstance3D" parent="Map/Room1/Computer"]
+transform = Transform3D(0.0716625, -0.132462, 0, 0.00626965, 1.51405, 0, 0, 0, 1.7294, 0.853303, 1.37756, -4.19617e-05)
+mesh = SubResource("BoxMesh_imqcn")
+
+[node name="Sprite3D" type="Sprite3D" parent="Map/Room1/Computer/Screen"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.6, 0, 0)
+pixel_size = 0.001
+texture = SubResource("ViewportTexture_s146v")
+
+[node name="SubViewport" type="SubViewport" parent="Map/Room1/Computer/Screen/Sprite3D"]
+transparent_bg = true
+size = Vector2i(1025, 915)
+
+[node name="Text" type="Label" parent="Map/Room1/Computer/Screen/Sprite3D/SubViewport"]
+offset_right = 1025.0
+offset_bottom = 915.0
+theme = SubResource("Theme_18xt8")
+theme_override_colors/font_color = Color(0.0431373, 0.0901961, 0.368627, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.556863, 0.556863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("5_dlqm0")
+
+[node name="LeftClick" type="Sprite2D" parent="Map/Room1/Computer/Screen/Sprite3D/SubViewport/Text"]
+visible = false
+position = Vector2(500, 800)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_e8vv3")
+
+[node name="Table" parent="Map/Room1" instance=ExtResource("5_hujhc")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.483064, 3.19181)
+
+[node name="Collider" parent="Map/Room1" instance=ExtResource("1_ti5od")]
+transform = Transform3D(1.22241, 0, 0, 0, 1.67582, 0, 0, 0, 1.97753, -0.0255668, 1.33052, 3.21891)
+visible = false
+
+[node name="Wall" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 23.005, 11.502, 1.60845, 3.08944)
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall3" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 9.31294, -1.98977, 1.60845, -12.3866)
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall6" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 9.31294, 4.05375, 1.60845, -19.2172)
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall2" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 23.005, 11.502, 1.60845, -21.8896)
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall4" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 23.005, 17.5826, 1.60845, -12.1377)
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Wall5" parent="Map" instance=ExtResource("1_ti5od")]
+transform = Transform3D(0.232441, 0, 0, 0, 5.43983, 0, 0, 0, 5.24748, 11.5346, 1.60686, -9.13943)
+visible = false
+mesh = SubResource("BoxMesh_7nfof")
+color = Color(0.909804, 0.72549, 0.498039, 1)
+
+[node name="Label" type="Label3D" parent="Map"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.4, 1.5, -7.52)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "< CANTEEN
+< POWER CONTROL
+STORAGE >
+EXIT >"
+font_size = 50
+outline_size = 5
+
+[node name="Label4" type="Label3D" parent="Map"]
+transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, -14.1454, 1.5, 0.441058)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "CANTEEN"
+font_size = 50
+outline_size = 5
+
+[node name="Label5" type="Label3D" parent="Map"]
+transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, -14.1448, 1.5, -12.3648)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "P̸̼̀O̷̙͌W̴̜͝Ě̵̲R̵̼̈́ ̸̣͠C̴̖̋Ȍ̵̥N̶̻͂T̸̜͑Ř̸̨O̶̢͆L̵̞̈́"
+font_size = 50
+outline_size = 5
+
+[node name="Label2" type="Label3D" parent="Map"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 6.06076, 1.5, -11.3935)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "STORAGE"
+font_size = 50
+outline_size = 5
+
+[node name="Label3" type="Label3D" parent="Map"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 11.6378, 1.92952, -9.44118)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "D̴̙̍O̸̞͘ ̵̧͘N̵̦̓O̷͔̾T̶̫͊
+"
+font_size = 72
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_nkydw")
+autoplay = true

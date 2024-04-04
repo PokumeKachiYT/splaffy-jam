@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://ip2r7ss67un3"]
+
+[ext_resource type="Texture2D" uid="uid://dqyrxwbnx6bnv" path="res://Assets/Sprites/Battery.svg" id="1_8o5fg"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="Battery" type="Sprite2D" parent="."]
+position = Vector2(114, 1006)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_8o5fg")
+
+[node name="ColorRect" type="ColorRect" parent="Battery"]
+offset_left = 270.0
+offset_top = 175.0
+offset_right = 865.0
+offset_bottom = 525.0
+rotation = 3.14159
