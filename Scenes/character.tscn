@@ -41,12 +41,12 @@ func toggle_ui() -> void:
 	UI.visible = true
 
 func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
 	Global.StartGame.connect(start)
 	Global.ToggleUI.connect(toggle_ui)
 
 func _physics_process(delta):
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
 	battery_bar.size.x = 595.0 * (battery_used / 100.0)
 	
 	if paused:
